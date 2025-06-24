@@ -1,0 +1,13 @@
+
+Comparacoes Sequencial Jogo: 45000 
+Tempo Sequencial Jogo: 0.042000 
+Comparacoes Sequencial Jogo: 45000 
+Tempo Sequencial Jogo: 0.043000 
+Comparacoes Sequencial Jogo: 45000 
+Tempo Sequencial Jogo: 0.035000 
+Comparacoes Sequencial Jogo: 45000 
+Tempo Sequencial Jogo: 0.044000 
+Comparacoes Sequencial Jogo: 45000 
+Tempo Sequencial Jogo: 0.031000 
+Tempo Merge Sort Externo Jogo: 0.012000 
+Base de dados de jogos ordenada com sucesso!
