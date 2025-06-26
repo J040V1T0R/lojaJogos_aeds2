@@ -11,3 +11,26 @@ Comparacoes Sequencial Jogo: 45000
 Tempo Sequencial Jogo: 0.031000 
 Tempo Merge Sort Externo Jogo: 0.012000 
 Base de dados de jogos ordenada com sucesso!
+
+Tempo Merge Sort Externo Jogo: 0.004000 
+Base de dados de jogos ordenada com sucesso!
+
+Comparacoes Binaria Jogo: 2 
+Tempo Binaria Jogo: 0.000000 
+Comparacoes Binaria Jogo: 4 
+Tempo Binaria Jogo: 0.000000 
+Comparacoes Binaria Jogo: 2 
+Tempo Binaria Jogo: 0.000000 
+Comparacoes Binaria Jogo: 4 
+Tempo Binaria Jogo: 0.000000 
+Tempo Merge Sort Externo Jogo: 0.004000 
+Base de dados de jogos ordenada com sucesso!
+
+Comparacoes Binaria Jogo: 2 
+Tempo Binaria Jogo: 0.000000 
+Comparacoes Binaria Jogo: 4 
+Tempo Binaria Jogo: 0.000000 
+Comparacoes Binaria Jogo: 2 
+Tempo Binaria Jogo: 0.000000 
+Comparacoes Binaria Jogo: 4 
+Tempo Binaria Jogo: 0.000000 
