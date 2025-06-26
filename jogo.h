@@ -5,66 +5,60 @@
 #include <stdio.h>
 #include <time.h> // Adicionado para a função shuffle
 
-// Definição da estrutura TJogo para representar um jogo
 typedef struct Jogo {
-    int cod;           // Código único do jogo
-    char titulo[100];  // Título do jogo
-    char genero[50];   // Gênero do jogo
-    char plataforma[50]; // Plataforma(s) em que o jogo está disponível
-    double preco;      // Preço do jogo
+    int cod;
+    char titulo[100];
+    char genero[50];
+    char plataforma[50];
+    double preco;
+    int quantidadeEmEstoque; // NOVO ATRIBUTO
 } TJogo;
 
 
-// Funções para manipulação de jogos e da base de dados
-// Retorna o tamanho em bytes de um registro de jogo.
+// Retorna tamanho do jogo em bytes
 int tamanho_registro_jogo();
 
-// Cria uma nova instância de TJogo com os dados fornecidos.
-// Parâmetros: cod (código), titulo, genero, plataforma, preco.
-// Retorna um ponteiro para o TJogo recém-criado.
-TJogo *jogo(int cod, char *titulo, char *genero, char *plataforma, double preco);
+// Cria jogo.
+TJogo *jogo(int cod, char *titulo, char *genero, char *plataforma, double preco, int quantidadeEmEstoque); // NOVO PARAMETRO
 
 
-// Salva um jogo em um arquivo.
-// Parâmetros: j (ponteiro para o jogo a ser salvo), out (ponteiro para o arquivo).
+// Salva jogo no arquivo out, na posicao atual do cursor
 void salva_jogo(TJogo *j, FILE *out);
 
 
-// Retorna a quantidade total de registros de jogos no arquivo.
-// Parâmetro: arq (ponteiro para o arquivo).
+// retorna a quantidade de registros no arquivo
 int tamanho_arquivo_jogo(FILE *arq);
 
 
-// Lê um jogo de um arquivo na posição atual do cursor.
-// Parâmetro: in (ponteiro para o arquivo).
-// Retorna um ponteiro para o jogo lido, ou NULL se não houver mais jogos para ler.
+// Le um jogo do arquivo in na posicao atual do cursor
+// Retorna um ponteiro para jogo lido do arquivo
 TJogo *le_jogo(FILE *in);
 
 
-// Imprime os detalhes de um jogo no console.
-// Parâmetro: j (ponteiro para o jogo a ser impresso).
+// Imprime jogo
 void imprime_jogo(TJogo *j);
 
 
-// Cria uma base de dados de jogos em um arquivo, com um número especificado de jogos.
-// Os jogos são inicialmente criados com códigos sequenciais.
-// Parâmetros: out (ponteiro para o arquivo de saída), tam (quantidade de jogos a serem criados).
+// Cria a base de dados de jogos
 void criarBaseJogos(FILE *out, int tam);
 
-// Embaralha os códigos de um vetor de inteiros.
-// Utilizado para criar uma base de dados desordenada.
-// Parâmetros: vet (ponteiro para o array de inteiros), tam (tamanho do array).
+// Embaralha base de dados de jogos
 void embaralha_jogos(int *vet, int tam);
 
-// Imprime todos os jogos presentes na base de dados.
-// Parâmetro: out (ponteiro para o arquivo da base de dados).
+// Imprime a base de dados de jogos
 void imprimirBaseJogos(FILE *out);
 
 
-// Compara dois jogos.
-// Retorna 1 se os códigos e títulos dos jogos forem iguais, e 0 caso contrário.
-// Parâmetros: j1 (ponteiro para o primeiro jogo), j2 (ponteiro para o segundo jogo).
+// Compara dois jogos
+// Retorna 1 se os valores dos atributos de ambos forem iguais
+// e 0 caso contrario
 int compara_jogos(TJogo *j1, TJogo *j2);
+
+// NOVO: Adiciona um jogo individualmente ao estoque (apenas ao final do arquivo)
+void adiciona_jogo_ao_estoque(TJogo *j, FILE *out);
+
+// NOVO: Atualiza a quantidade em estoque de um jogo existente no arquivo
+void atualiza_quantidade_estoque_jogo(int cod_jogo, int nova_quantidade, FILE *arq_jogos);
 
 
 #endif // JOGO_H_INCLUDED

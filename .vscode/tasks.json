@@ -15,6 +15,9 @@
                 "${workspaceFolder}\\buscaSequencialJogo.c",
                 "${workspaceFolder}\\buscaBinariaJogo.c",
                 "${workspaceFolder}\\mergeSortExternoJogo.c",
+                "${workspaceFolder}\\cliente.c", 
+                "${workspaceFolder}\\funcionario.c", 
+                "${workspaceFolder}\\venda.c", 
                 "-o",
                 "${workspaceFolder}\\output\\main.exe",
                 "-lm"
