@@ -2,36 +2,37 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build All C Files (GCC)",
-            "type": "shell",
-            "command": "C:\\MinGW\\bin\\gcc.EXE", // Garanta que este caminho está correto
+            "label": "Build All C Files (GCC)", // Nome da sua tarefa de build
+            "type": "shell", // Indica que é um comando de shell
+            "command": "C:\\MinGW\\bin\\gcc.EXE", // **VERIFIQUE E AJUSTE** para o caminho EXATO do seu GCC
             "args": [
-                "-Wall",
-                "-Wextra",
-                "-g3",
-                // AQUI ESTÁ O PONTO CHAVE: LISTE TODOS OS SEUS ARQUIVOS .C!
+                "-Wall", // Habilita avisos (warnings)
+                "-Wextra", // Habilita avisos extras
+                "-g3", // Gera informações para depuração
+                // **LISTA TODOS OS SEUS ARQUIVOS .C AQUI!**
+                // Use "${workspaceFolder}" para se referir à raiz do seu projeto.
                 "${workspaceFolder}\\main.c",
-                "${workspaceFolder}\\jogo.c",
-                "${workspaceFolder}\\buscaSequencialJogo.c",
-                "${workspaceFolder}\\buscaBinariaJogo.c",
+                "${workspaceFolder}\\jogo.c", // Certifique-se do nome correto do arquivo (jogo.c ou funcionario.c)
+                "${workspaceFolder}\\buscaSequencialJogo.c", // Certifique-se do nome correto
+                "${workspaceFolder}\\buscaBinariaJogo.c", // Certifique-se do nome correto
                 "${workspaceFolder}\\mergeSortExternoJogo.c",
-                "${workspaceFolder}\\cliente.c", 
-                "${workspaceFolder}\\funcionario.c", 
-                "${workspaceFolder}\\venda.c", 
-                "-o",
-                "${workspaceFolder}\\output\\main.exe",
-                "-lm"
+                "${workspaceFolder}\\cliente.c",
+                "${workspaceFolder}\\funcionario.c", // Certifique-se do nome correto
+                "${workspaceFolder}\\venda.c",
+                "-o", // Flag para especificar o nome do arquivo de saída
+                "${workspaceFolder}\\output\\main.exe", // Caminho completo para o executável de saída
+                "-lm" // Linka a biblioteca matemática (necessário para funções como trunc, math.h)
             ],
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": true // Define esta como a tarefa de build padrão
             },
             "problemMatcher": [
-                "$gcc"
+                "$gcc" // Para o VS Code capturar erros e avisos do GCC
             ],
             "presentation": {
-                "reveal": "always",
-                "panel": "new"
+                "reveal": "always", // Mostra o terminal durante a execução
+                "panel": "new" // Abre um novo painel de terminal para a tarefa
             }
         }
     ]

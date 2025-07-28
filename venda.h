@@ -20,31 +20,27 @@ typedef struct ItemVenda {
 typedef struct Venda {
     int id;
     int id_cliente;
-    char dataVenda[11]; // Formato "DD/MM/AAAA"
-    TItemVenda itens[MAX_ITENS_VENDA]; // Lista de jogos vendidos
-    int num_itens; // Quantidade real de itens nesta venda
+    char dataVenda[11]; 
+    TItemVenda itens[MAX_ITENS_VENDA]; 
+    int num_itens; 
     double valorTotal;
 } TVenda;
 
-// Retorna o tamanho em bytes de um registro de venda
 int tamanho_registro_venda();
 
-// Cria uma nova venda
 TVenda *venda(int id, int id_cliente, char *dataVenda, double valorTotal);
 
-// Adiciona um item a uma venda
 void adiciona_item_venda(TVenda *v, int cod_jogo, int quantidade, double preco_unitario);
 
-// Salva uma venda no arquivo
 void salva_venda(TVenda *v, FILE *out);
 
-// Lê uma venda do arquivo
+
 TVenda *le_venda(FILE *in);
 
-// Imprime os detalhes de uma venda
 void imprime_venda(TVenda *v);
 
-// Registra uma nova venda no arquivo
 void registra_nova_venda(TVenda *v, FILE *arq_vendas);
 
-#endif // VENDA_H_INCLUDED
+int tamanho_arquivo_venda(FILE *arq);
+
+#endif 

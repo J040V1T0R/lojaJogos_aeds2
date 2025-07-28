@@ -4,18 +4,16 @@
 #include <stdarg.h>
 #include <math.h>
 
-// Retorna tamanho do jogo em bytes
 int tamanho_registro_jogo() {
-    return sizeof(int)  //cod
-           + sizeof(char) * 100 //titulo
-           + sizeof(char) * 50 //genero
-           + sizeof(char) * 50 //plataforma
-           + sizeof(double) //preco
-           + sizeof(int); // quantidadeEmEstoque
+    return sizeof(int)  
+           + sizeof(char) * 100 
+           + sizeof(char) * 50 
+           + sizeof(char) * 50 
+           + sizeof(double) 
+           + sizeof(int); 
 }
 
 
-// Cria jogo.
 TJogo *jogo(int cod, char *titulo, char *genero, char *plataforma, double preco, int quantidadeEmEstoque) {
     TJogo *j = (TJogo *) malloc(sizeof(TJogo));
     if (j) memset(j, 0, sizeof(TJogo));
@@ -28,8 +26,6 @@ TJogo *jogo(int cod, char *titulo, char *genero, char *plataforma, double preco,
     return j;
 }
 
-
-// Salva jogo no arquivo out, na posicao atual do cursor
 void salva_jogo(TJogo *j, FILE *out) {
     fwrite(&j->cod, sizeof(int), 1, out);
     fwrite(j->titulo, sizeof(char), sizeof(j->titulo), out);
@@ -39,20 +35,14 @@ void salva_jogo(TJogo *j, FILE *out) {
     fwrite(&j->quantidadeEmEstoque, sizeof(int), 1, out);
 }
 
-
-// retorna a quantidade de registros no arquivo
 int tamanho_arquivo_jogo(FILE *arq) {
-    long current_pos = ftell(arq); // Salva a posição atual do cursor
+    long current_pos = ftell(arq);
     fseek(arq, 0, SEEK_END);
     int tam = trunc((double)ftell(arq) / tamanho_registro_jogo());
-    fseek(arq, current_pos, SEEK_SET); // Restaura a posição original do cursor
+    fseek(arq, current_pos, SEEK_SET);
     return tam;
 }
 
-
-
-// Le um jogo do arquivo in na posicao atual do cursor
-// Retorna um ponteiro para jogo lido do arquivo
 TJogo *le_jogo(FILE *in) {
     TJogo *j = (TJogo *) malloc(sizeof(TJogo));
     if (0 >= fread(&j->cod, sizeof(int), 1, in)) {
@@ -67,8 +57,6 @@ TJogo *le_jogo(FILE *in) {
     return j;
 }
 
-
-// Imprime jogo
 void imprime_jogo(TJogo *j) {
     printf("**********************************************");
     printf("\nJogo de codigo ");
@@ -87,13 +75,11 @@ void imprime_jogo(TJogo *j) {
 }
 
 
-// Cria a base de dados de jogos
 void criarBaseJogos(FILE *out, int tam){
 
     int vet[tam];
     TJogo *j;
 
-    // NOVO: Array de nomes de jogos reais e mais comuns
     char *nomes_jogos[] = {
         "The Witcher 3: Wild Hunt",
         "Cyberpunk 2077",
@@ -113,13 +99,11 @@ void criarBaseJogos(FILE *out, int tam){
     };
     int num_nomes = sizeof(nomes_jogos) / sizeof(nomes_jogos[0]);
 
-    // NOVO: Array de gêneros
     char *generos[] = {
         "RPG", "Aventura", "Mundo Aberto", "Tiro", "Estratégia", "Simulação"
     };
     int num_generos = sizeof(generos) / sizeof(generos[0]);
 
-    // NOVO: Array de plataformas
     char *plataformas[] = {
         "PC", "PlayStation", "Xbox", "Nintendo Switch"
     };
@@ -138,19 +122,16 @@ void criarBaseJogos(FILE *out, int tam){
         char genero[50];
         char plataforma[50];
 
-        // NOVO: Usando nomes reais e ciclos para cada atributo
         strcpy(titulo, nomes_jogos[i % num_nomes]);
         strcpy(genero, generos[i % num_generos]);
         strcpy(plataforma, plataformas[i % num_plataformas]);
 
-        // Quantidade inicial de estoque para jogos criados na base
         j = jogo(vet[i], titulo, genero, plataforma, 59.90 + (i * 0.1), 100);
         salva_jogo(j, out);
         free(j);
     }
 }
 
-//embaralha base de dados
 void embaralha_jogos(int *vet, int tam) {
     int tmp;
     srand(time(NULL));
@@ -190,7 +171,6 @@ int compara_jogos(TJogo *j1, TJogo *j2)
 	return 1;
 }
 
-// Adiciona um jogo individualmente ao estoque (apenas ao final do arquivo)
 void adiciona_jogo_ao_estoque(TJogo *j, FILE *out) {
     fseek(out, 0, SEEK_END);
     salva_jogo(j, out);
@@ -198,7 +178,6 @@ void adiciona_jogo_ao_estoque(TJogo *j, FILE *out) {
     printf("\nJogo '%s' adicionado ao estoque.\n", j->titulo);
 }
 
-// Atualiza a quantidade em estoque de um jogo existente no arquivo
 void atualiza_quantidade_estoque_jogo(int cod_jogo, int nova_quantidade, FILE *arq_jogos) {
     TJogo *j;
     int pos_encontrada = -1;
@@ -224,4 +203,40 @@ void atualiza_quantidade_estoque_jogo(int cod_jogo, int nova_quantidade, FILE *a
     }
     printf("\nJogo de codigo %d nao encontrado para atualizar estoque.\n", cod_jogo);
     fseek(arq_jogos, current_pos, SEEK_SET);
+}
+
+TJogo *cria_jogo_manual() {
+    int cod;
+    char titulo[100];
+    char genero[50];
+    char plataforma[50];
+    double preco;
+    int quantidadeEmEstoque;
+
+    printf("\n--- Criar Novo Jogo (Entrada Manual) ---\n");
+    printf("Codigo: ");
+    scanf("%d", &cod);
+    getchar(); 
+
+    printf("Titulo: ");
+    fgets(titulo, sizeof(titulo), stdin);
+    titulo[strcspn(titulo, "\n")] = 0; 
+
+    printf("Genero: ");
+    fgets(genero, sizeof(genero), stdin);
+    genero[strcspn(genero, "\n")] = 0;
+
+    printf("Plataforma: ");
+    fgets(plataforma, sizeof(plataforma), stdin);
+    plataforma[strcspn(plataforma, "\n")] = 0;
+
+    printf("Preco: ");
+    scanf("%lf", &preco);
+    getchar(); 
+
+    printf("Quantidade em Estoque: ");
+    scanf("%d", &quantidadeEmEstoque);
+    getchar(); 
+
+    return jogo(cod, titulo, genero, plataforma, preco, quantidadeEmEstoque);
 }

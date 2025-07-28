@@ -1,29 +1,26 @@
 #include "venda.h"
 #include <string.h>
 
-// Retorna o tamanho em bytes de um registro de venda
 int tamanho_registro_venda() {
-    return sizeof(int)      // id
-           + sizeof(int)      // id_cliente
-           + sizeof(char) * 11  // dataVenda
-           + (sizeof(TItemVenda) * MAX_ITENS_VENDA) // itens (fixo)
-           + sizeof(int)      // num_itens
-           + sizeof(double);    // valorTotal
+    return sizeof(int)      
+           + sizeof(int)      
+           + sizeof(char) * 11  
+           + (sizeof(TItemVenda) * MAX_ITENS_VENDA) 
+           + sizeof(int)      
+           + sizeof(double);    
 }
 
-// Cria uma nova venda
 TVenda *venda(int id, int id_cliente, char *dataVenda, double valorTotal) {
     TVenda *v = (TVenda *) malloc(sizeof(TVenda));
     if (v) memset(v, 0, sizeof(TVenda));
     v->id = id;
     v->id_cliente = id_cliente;
     strcpy(v->dataVenda, dataVenda);
-    v->num_itens = 0; // Inicializa sem itens
+    v->num_itens = 0; 
     v->valorTotal = valorTotal;
     return v;
 }
 
-// Adiciona um item a uma venda
 void adiciona_item_venda(TVenda *v, int cod_jogo, int quantidade, double preco_unitario) {
     if (v->num_itens < MAX_ITENS_VENDA) {
         v->itens[v->num_itens].cod_jogo = cod_jogo;
@@ -36,17 +33,15 @@ void adiciona_item_venda(TVenda *v, int cod_jogo, int quantidade, double preco_u
     }
 }
 
-// Salva uma venda no arquivo
 void salva_venda(TVenda *v, FILE *out) {
     fwrite(&v->id, sizeof(int), 1, out);
     fwrite(&v->id_cliente, sizeof(int), 1, out);
     fwrite(v->dataVenda, sizeof(char), sizeof(v->dataVenda), out);
-    fwrite(v->itens, sizeof(TItemVenda), MAX_ITENS_VENDA, out); // Salva o array completo
+    fwrite(v->itens, sizeof(TItemVenda), MAX_ITENS_VENDA, out); 
     fwrite(&v->num_itens, sizeof(int), 1, out);
     fwrite(&v->valorTotal, sizeof(double), 1, out);
 }
 
-// Lê uma venda do arquivo
 TVenda *le_venda(FILE *in) {
     TVenda *v = (TVenda *) malloc(sizeof(TVenda));
     if (0 >= fread(&v->id, sizeof(int), 1, in)) {
@@ -61,7 +56,6 @@ TVenda *le_venda(FILE *in) {
     return v;
 }
 
-// Imprime os detalhes de uma venda
 void imprime_venda(TVenda *v) {
     printf("--- Venda ---\n");
     printf("ID da Venda: %d\n", v->id);
@@ -76,10 +70,17 @@ void imprime_venda(TVenda *v) {
     printf("-------------\n");
 }
 
-// Registra uma nova venda no arquivo
 void registra_nova_venda(TVenda *v, FILE *arq_vendas) {
     fseek(arq_vendas, 0, SEEK_END);
     salva_venda(v, arq_vendas);
     fflush(arq_vendas);
     printf("Venda %d registrada com sucesso.\n", v->id);
+}
+
+int tamanho_arquivo_venda(FILE *arq) {
+    long current_pos = ftell(arq);
+    fseek(arq, 0, SEEK_END);
+    int tam = (int)(ftell(arq) / tamanho_registro_venda());
+    fseek(arq, current_pos, SEEK_SET);
+    return tam;
 }

@@ -1,16 +1,16 @@
 #include "funcionario.h"
 #include <string.h>
 
-// Retorna o tamanho em bytes de um registro de funcionario
+//retorna o tamanho em bytes de um registro de funcionario
 int tamanho_registro_funcionario() {
-    return sizeof(int)      // id
-           + sizeof(char) * 100 // nome
-           + sizeof(char) * 50  // cargo
-           + sizeof(double)     // salario
-           + sizeof(char) * 11; // dataContratacao
+    return sizeof(int)      
+           + sizeof(char) * 100 
+           + sizeof(char) * 50  
+           + sizeof(double)   
+           + sizeof(char) * 11; 
 }
 
-// Cria um novo funcionario
+//cria um novo funcionario
 TFuncionario *funcionario(int id, char *nome, char *cargo, double salario, char *dataContratacao) {
     TFuncionario *f = (TFuncionario *) malloc(sizeof(TFuncionario));
     if (f) memset(f, 0, sizeof(TFuncionario));
@@ -22,7 +22,6 @@ TFuncionario *funcionario(int id, char *nome, char *cargo, double salario, char 
     return f;
 }
 
-// Salva um funcionario no arquivo
 void salva_funcionario(TFuncionario *f, FILE *out) {
     fwrite(&f->id, sizeof(int), 1, out);
     fwrite(f->nome, sizeof(char), sizeof(f->nome), out);
@@ -31,7 +30,6 @@ void salva_funcionario(TFuncionario *f, FILE *out) {
     fwrite(f->dataContratacao, sizeof(char), sizeof(f->dataContratacao), out);
 }
 
-// Lê um funcionario do arquivo
 TFuncionario *le_funcionario(FILE *in) {
     TFuncionario *f = (TFuncionario *) malloc(sizeof(TFuncionario));
     if (0 >= fread(&f->id, sizeof(int), 1, in)) {
@@ -45,7 +43,6 @@ TFuncionario *le_funcionario(FILE *in) {
     return f;
 }
 
-// Imprime os detalhes de um funcionario
 void imprime_funcionario(TFuncionario *f) {
     printf("--- Funcionario ---\n");
     printf("ID: %d\n", f->id);
@@ -56,10 +53,40 @@ void imprime_funcionario(TFuncionario *f) {
     printf("-------------------\n");
 }
 
-// Adiciona um novo funcionario ao arquivo
 void cadastra_novo_funcionario(TFuncionario *f, FILE *arq_funcionarios) {
     fseek(arq_funcionarios, 0, SEEK_END);
     salva_funcionario(f, arq_funcionarios);
     fflush(arq_funcionarios);
     printf("Funcionario '%s' cadastrado com sucesso.\n", f->nome);
+}
+
+TFuncionario *cria_funcionario_manual() {
+    int id;
+    char nome[100];
+    char cargo[50];
+    double salario;
+    char dataContratacao[11];
+
+    printf("\n--- Cadastrar Novo Funcionario (Entrada Manual) ---\n");
+    printf("ID do Funcionario: ");
+    scanf("%d", &id);
+    getchar(); 
+
+    printf("Nome: ");
+    fgets(nome, sizeof(nome), stdin);
+    nome[strcspn(nome, "\n")] = 0;
+
+    printf("Cargo: ");
+    fgets(cargo, sizeof(cargo), stdin);
+    cargo[strcspn(cargo, "\n")] = 0;
+
+    printf("Salario: ");
+    scanf("%lf", &salario);
+    getchar(); 
+
+    printf("Data de Contratacao (DD/MM/AAAA): ");
+    fgets(dataContratacao, sizeof(dataContratacao), stdin);
+    dataContratacao[strcspn(dataContratacao, "\n")] = 0;
+
+    return funcionario(id, nome, cargo, salario, dataContratacao);
 }
