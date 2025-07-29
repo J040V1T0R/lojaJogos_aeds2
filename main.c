@@ -9,56 +9,11 @@
 #include "mergeSortExternoJogo.h"
 #include "cliente.h"
 #include "funcionario.h"
-#include "venda.h"
+#include "venda.h" // AGORA CONTÉM O PROTÓTIPO DE realizar_compra
 
 
-void realizar_compra(int id_cliente, int cod_jogo_desejado, int quantidade_comprada,
-                      FILE *arq_jogos, FILE *arq_clientes, FILE *arq_vendas, FILE *log) {
-
-    printf("\n--- Realizando compra (Cliente %d, Jogo %d, Qtd %d) ---\n",
-           id_cliente, cod_jogo_desejado, quantidade_comprada);
-
-    
-    TJogo *jogo_no_estoque = busca_binaria_jogo(cod_jogo_desejado, arq_jogos, 0, tamanho_arquivo_jogo(arq_jogos) - 1, log);
-
-    if (jogo_no_estoque == NULL) {
-        printf("ERRO: Jogo %d nao encontrado no estoque (ou base nao ordenada para busca binaria).\n", cod_jogo_desejado);
-        return;
-    }
-
-    if (jogo_no_estoque->quantidadeEmEstoque < quantidade_comprada) {
-        printf("ERRO: Estoque insuficiente para o Jogo '%s'. Disponivel: %d, Solicitado: %d.\n",
-               jogo_no_estoque->titulo, jogo_no_estoque->quantidadeEmEstoque, quantidade_comprada);
-        free(jogo_no_estoque);
-        return;
-    }
-
-    printf("Jogo '%s' disponivel. Estoque atual: %d. Preco: %.2f.\n",
-           jogo_no_estoque->titulo, jogo_no_estoque->quantidadeEmEstoque, jogo_no_estoque->preco);
-
-    
-    int nova_quantidade_estoque = jogo_no_estoque->quantidadeEmEstoque - quantidade_comprada;
-    atualiza_quantidade_estoque_jogo(cod_jogo_desejado, nova_quantidade_estoque, arq_jogos);
-
-    //cria um registro de venda associando o cliente e os jogos
-    time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
-    char data_venda[11];
-    sprintf(data_venda, "%02d/%02d/%04d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
-
-    int proximo_id_venda = tamanho_arquivo_venda(arq_vendas) + 1;
-
-    TVenda *nova_venda = venda(proximo_id_venda, id_cliente, data_venda, 0.0);
-    adiciona_item_venda(nova_venda, cod_jogo_desejado, quantidade_comprada, jogo_no_estoque->preco);
-
-    registra_nova_venda(nova_venda, arq_vendas);
-
-    imprime_venda(nova_venda);
-
-    free(nova_venda);
-    free(jogo_no_estoque);
-    printf("Compra realizada com sucesso!\n");
-}
+// A função realizar_compra foi movida para venda.c e seu protótipo está em venda.h
+// Não é mais necessária aqui no main.c
 
 
 int main()
@@ -106,7 +61,7 @@ int main()
 
     printf("\n--- Gerando a base inicial de 10 jogos desordenados (automático) ---\n");
     criarBaseJogos(arq_jogos, 10);
-    fflush(arq_jogos); 
+    fflush(arq_jogos);
     printf("Base inicial de jogos desordenados criada com sucesso.\n");
 
 
@@ -114,10 +69,10 @@ int main()
         printf("\n============================================\n");
         printf("           MENU DE GERENCIAMENTO DE JOGOS   \n");
         printf("============================================\n");
-        printf("1. Recriar Base de Jogos (10 jogos desordenados)\n"); 
+        printf("1. Recriar Base de Jogos (10 jogos desordenados)\n");
         printf("2. Imprimir Base de Jogos (Desordenada)\n");
-        printf("3. Imprimir Base de Jogos (Ordenada)\n"); 
-        printf("4. Ordenar Base de Jogos (Merge Sort Externo)\n");
+        printf("3. Imprimir Base de Jogos (Ordenada)\n");
+        printf("4. Ordenar Base de Jogos (Escolher Metodo)\n");
         printf("5. Adicionar Novo Jogo (Manual)\n");
         printf("6. Cadastrar Novo Cliente (Manual)\n");
         printf("7. Cadastrar Novo Funcionario (Manual)\n");
@@ -127,35 +82,52 @@ int main()
         printf("============================================\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
-        getchar(); 
+        getchar();
 
         switch (opcao) {
-            case 1: 
+            case 1:
                 printf("\n--- Recriando a base de dados de 10 jogos desordenados ---\n");
-                
                 criarBaseJogos(arq_jogos, 10);
                 fflush(arq_jogos);
                 printf("Base de jogos recriada com sucesso.\n");
                 break;
 
-            case 2: 
+            case 2:
                 printf("\n--- Imprimindo a base de dados de jogos (Desordenada) ---\n");
                 imprimirBaseJogos(arq_jogos);
                 break;
 
-            case 3: 
+            case 3:
                 printf("\n--- Imprimindo a base de dados de jogos (Ordenada) ---\n");
-                
                 imprimirBaseJogos(arq_jogos);
                 break;
 
-            case 4: 
-                printf("\nDeseja ordenar a base de jogos? (s/n): ");
+            case 4:
+                printf("\n--- Escolha o Metodo de Geracao de Runs ---\n");
+                printf("1. Metodo Antigo (qsort em blocos)\n");
+                printf("2. Selecao por Substituicao\n");
+                printf("Escolha uma opcao para ordenar: ");
+                int sub_opcao_ordenacao;
+                scanf("%d", &sub_opcao_ordenacao);
+                getchar();
+
+                RunGenerationMethod metodo_escolhido;
+                if (sub_opcao_ordenacao == 1) {
+                    metodo_escolhido = RUN_GENERATION_OLD_WAY;
+                } else if (sub_opcao_ordenacao == 2) {
+                    metodo_escolhido = RUN_GENERATION_REPLACEMENT_SELECTION;
+                } else {
+                    printf("Opcao invalida. Ordenacao cancelada.\n");
+                    break;
+                }
+
+                printf("\nDeseja ordenar a base de jogos com o metodo escolhido? (s/n): ");
                 fgets(resposta, sizeof(resposta), stdin);
                 resposta[strcspn(resposta, "\n")] = 0;
                 if (strcmp(resposta, "s") == 0 || strcmp(resposta, "S") == 0) {
                     printf("\n--- Ordenando a base de dados de jogos com Merge Sort Externo ---\n");
-                    mergeSortExternoJogo(arq_jogos, log);
+                    // Passa o método escolhido para a função mergeSortExternoJogo
+                    mergeSortExternoJogo(arq_jogos, log, metodo_escolhido);
                     fflush(arq_jogos);
                     printf("Base de dados de jogos ordenada com sucesso.\n");
                 } else {
@@ -163,7 +135,7 @@ int main()
                 }
                 break;
 
-            case 5: 
+            case 5:
                 do {
                     printf("\nDeseja adicionar um novo jogo manualmente? (s/n): ");
                     fgets(resposta, sizeof(resposta), stdin);
@@ -187,7 +159,7 @@ int main()
                 } while (strcmp(resposta, "s") == 0 || strcmp(resposta, "S") == 0);
                 break;
 
-            case 6: 
+            case 6:
                 do {
                     printf("\nDeseja cadastrar um novo cliente manualmente? (s/n): ");
                     fgets(resposta, sizeof(resposta), stdin);
@@ -211,7 +183,7 @@ int main()
                 } while (strcmp(resposta, "s") == 0 || strcmp(resposta, "S") == 0);
                 break;
 
-            case 7: 
+            case 7:
                 do {
                     printf("\nDeseja cadastrar um novo funcionario manualmente? (s/n): ");
                     fgets(resposta, sizeof(resposta), stdin);
@@ -235,7 +207,7 @@ int main()
                 } while (strcmp(resposta, "s") == 0 || strcmp(resposta, "S") == 0);
                 break;
 
-            case 8: //buscar jogo(sequencial ou binaria)
+            case 8:
                 printf("\n--- Buscar Jogo ---\n");
                 printf("Qual o codigo do jogo que deseja buscar? ");
                 scanf("%d", &cod_busca);
@@ -264,7 +236,7 @@ int main()
                 }
                 break;
 
-            case 9: 
+            case 9:
                 printf("\n--- Realizar Compra ---\n");
                 printf("ID do Cliente para a compra: ");
                 scanf("%d", &id_cliente_compra);
@@ -281,7 +253,7 @@ int main()
                 realizar_compra(id_cliente_compra, cod_jogo_compra, qtd_compra, arq_jogos, arq_clientes, arq_vendas, log);
                 break;
 
-            case 0: 
+            case 0:
                 printf("\nSaindo do programa. Ate mais!\n");
                 break;
 
@@ -291,7 +263,6 @@ int main()
         }
 
     } while (opcao != 0);
-
 
 
     fclose(arq_jogos);
