@@ -1,0 +1,38 @@
+--- INICIO DOS TESTES DE DESEMPENHO ---
+
+======================================================
+BASE DE DADOS: 10 REGISTROS
+
+--- Metodo Antigo (Merge Sort Basico) ---
+Tempo total (Merge Sort Externo): 0.019000 segundos
+
+--- Metodo Novo (Selecao + Arvore) ---
+Tempo total (Selecao por Substituicao + Arvore de Vencedores): 0.006000 segundos
+
+======================================================
+BASE DE DADOS: 100 REGISTROS
+
+--- Metodo Antigo (Merge Sort Basico) ---
+Tempo total (Merge Sort Externo): 0.025000 segundos
+
+--- Metodo Novo (Selecao + Arvore) ---
+Tempo total (Selecao por Substituicao + Arvore de Vencedores): 0.038000 segundos
+
+======================================================
+BASE DE DADOS: 1000 REGISTROS
+
+--- Metodo Antigo (Merge Sort Basico) ---
+Tempo total (Merge Sort Externo): 0.018000 segundos
+
+--- Metodo Novo (Selecao + Arvore) ---
+Tempo total (Selecao por Substituicao + Arvore de Vencedores): 0.036000 segundos
+
+======================================================
+BASE DE DADOS: 5000 REGISTROS
+
+--- Metodo Antigo (Merge Sort Basico) ---
+Tempo total (Merge Sort Externo): 0.133000 segundos
+
+--- Metodo Novo (Selecao + Arvore) ---
+Tempo total (Selecao por Substituicao + Arvore de Vencedores): 0.150000 segundos
+
