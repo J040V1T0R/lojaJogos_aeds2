@@ -3,9 +3,9 @@
 #include <time.h>
 #include "testes.h"
 
-// Implementação da função que automatiza os testes
+// função que automatiza os testes
 void rodar_testes_de_desempenho(FILE **p_arq_jogos, FILE *log) {
-    // Bases de dados a serem testadas, conforme solicitado
+    
     int tamanhos[] = {10, 100, 1000, 5000};
     int num_tamanhos = sizeof(tamanhos) / sizeof(tamanhos[0]);
 
@@ -19,11 +19,10 @@ void rodar_testes_de_desempenho(FILE **p_arq_jogos, FILE *log) {
         fprintf(log, "======================================================\n");
         fprintf(log, "BASE DE DADOS: %d REGISTROS\n", tam_base);
 
-        // --- Teste 1: Merge Sort Externo (Método Antigo) ---
         printf("\n1. Testando Metodo Antigo (Merge Sort Basico)...\n");
         fprintf(log, "\n--- Metodo Antigo (Merge Sort Basico) ---\n");
 
-        // Recria a base desordenada para o teste
+        // recria a base desordenada para o teste
         fclose(*p_arq_jogos);
         *p_arq_jogos = fopen("jogos.dat", "w+b");
         if (!*p_arq_jogos) exit(1);
@@ -32,11 +31,10 @@ void rodar_testes_de_desempenho(FILE **p_arq_jogos, FILE *log) {
         mergeSortExternoJogo(*p_arq_jogos, log);
         fflush(log);
 
-        // --- Teste 2: Seleção por Substituição + Árvore de Vencedores (Método Novo) ---
         printf("\n2. Testando Metodo Novo (Selecao por Substituicao + Arvore de Vencedores)...\n");
         fprintf(log, "\n--- Metodo Novo (Selecao + Arvore) ---\n");
 
-        // Recria a mesma base desordenada para um teste justo
+        // recria a mesma base desordenada para um teste justo
         fclose(*p_arq_jogos);
         *p_arq_jogos = fopen("jogos.dat", "w+b");
         if (!*p_arq_jogos) exit(1);
@@ -44,7 +42,7 @@ void rodar_testes_de_desempenho(FILE **p_arq_jogos, FILE *log) {
 
         clock_t inicio_total = clock();
 
-        // Usamos um valor de memória (M) maior para bases maiores para ser mais eficiente
+        // usamos um valor de memória (M) maior para bases maiores para ser mais eficiente
         int M = (tam_base < 1000) ? 10 : 100;
         int num_particoes = selecao_por_substituicao(*p_arq_jogos, "particao_sel", M);
         printf("   - %d particoes criadas (M=%d).\n", num_particoes, M);
