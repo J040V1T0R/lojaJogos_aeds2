@@ -3,20 +3,17 @@
 #include <time.h>
 #include <string.h>
 
-// Módulos da aplicação
 #include "jogo.h"
 #include "cliente.h"
 #include "funcionario.h"
 #include "venda.h"
 
-// Módulos de algoritmos
 #include "buscaSequencialJogo.h"
 #include "buscaBinariaJogo.h"
 #include "mergeSortExternoJogo.h"
 #include "SelecaoSubs.h"
 #include "arvoreVencedores.h"
 
-// Módulo de testes
 #include "testes.h"
 
 
@@ -38,8 +35,7 @@ int main()
     TJogo *jogo_encontrado;
 
 
-    // Abertura e criação de arquivos de dados
-    // Abre o log no modo "w" para limpar o conteúdo a cada nova execução dos testes
+    // abre o log no modo "w" para limpar o conteúdo a cada nova execução dos testes
     if ((log = fopen("log_jogos.txt", "w")) == NULL) {
             printf("Erro ao abrir arquivo de log\n");
             exit(1);
