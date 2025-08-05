@@ -4,7 +4,6 @@
 
 #define MAX_PARTICOES 100 // Define um máximo de partições que podem ser criadas
 
-// Função auxiliar para encontrar o menor jogo no reservatório que não está congelado
 int encontrar_menor(TJogo* reservatorio, int* congelado, int M) {
     int menor_idx = -1;
     TJogo* menor_jogo = NULL;
@@ -26,7 +25,6 @@ int selecao_por_substituicao(FILE *arq_entrada, const char* nome_base_particoes,
     TJogo* reservatorio = (TJogo*) malloc(M * sizeof(TJogo));
     int* congelado = (int*) calloc(M, sizeof(int)); // 0 = não congelado, 1 = congelado
 
-    // Carrega o reservatório inicial
     int pos_reservatorio = 0;
     while(pos_reservatorio < M) {
         TJogo *j = le_jogo(arq_entrada);
@@ -48,7 +46,7 @@ int selecao_por_substituicao(FILE *arq_entrada, const char* nome_base_particoes,
             exit(1);
         }
 
-        // Descongela todos os registros para o início de uma nova partição
+        // descongela todos os registros para o início de uma nova partição
         for(int i = 0; i < M; i++) {
             congelado[i] = 0;
         }
@@ -56,7 +54,7 @@ int selecao_por_substituicao(FILE *arq_entrada, const char* nome_base_particoes,
         while (1) {
             int menor_idx = encontrar_menor(reservatorio, congelado, pos_reservatorio);
 
-            // Se todos no reservatório estão congelados, a partição atual termina
+            // se todos no reservatório estão congelados, a partição atual termina
             if (menor_idx == -1) {
                 break;
             }
@@ -67,7 +65,7 @@ int selecao_por_substituicao(FILE *arq_entrada, const char* nome_base_particoes,
             TJogo* proximo_jogo = le_jogo(arq_entrada);
 
             if (proximo_jogo) {
-                // Se o próximo registro for menor que o último salvo, congela
+                // se o próximo registro for menor que o último salvo, congela
                 if (proximo_jogo->cod < ultimo_salvo.cod) {
                     reservatorio[menor_idx] = *proximo_jogo;
                     congelado[menor_idx] = 1;
@@ -76,7 +74,7 @@ int selecao_por_substituicao(FILE *arq_entrada, const char* nome_base_particoes,
                 }
                 free(proximo_jogo);
             } else {
-                // Se não há mais registros de entrada, remove o menor do reservatório
+                // se não há mais registros de entrada, remove o menor do reservatório
                 for(int i = menor_idx; i < pos_reservatorio - 1; i++){
                     reservatorio[i] = reservatorio[i+1];
                     congelado[i] = congelado[i+1];
