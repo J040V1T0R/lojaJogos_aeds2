@@ -7,4 +7,4 @@
 // função que implementa a intercalação de partições usando uma Árvore de Vencedores
 void arvore_de_vencedores(const char* nome_base_particoes, int num_particoes, FILE* arq_saida);
 
-#endif // ARVOREVENCEDORES_H_INCLUDED
+#endif 
