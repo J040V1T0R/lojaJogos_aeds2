@@ -1,9 +1,9 @@
 #include "venda.h"
 #include "jogo.h"
-#include "buscaBinariaJogo.h" // Necessário para a função busca_binaria_jogo
+#include "buscaBinariaJogo.h" 
 #include <string.h>
 #include <stdlib.h>
-#include <time.h> // Necessário para obter a data atual
+#include <time.h> 
 
 TVenda *venda(int id_venda, int id_cliente, const char *data, double valor_total) {
     TVenda *v = (TVenda *) malloc(sizeof(TVenda));
@@ -51,7 +51,6 @@ int tamanho_arquivo_venda(FILE *arq) {
     return ftell(arq) / sizeof(TVenda);
 }
 
-// Implementação da função movida para cá
 void realizar_compra(int id_cliente, int cod_jogo_desejado, int quantidade_comprada,
                       FILE *arq_jogos, FILE *arq_clientes, FILE *arq_vendas, FILE *log) {
 
