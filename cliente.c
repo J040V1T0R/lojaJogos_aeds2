@@ -2,13 +2,12 @@
 #include <string.h>
 
 int tamanho_registro_cliente() {
-    return sizeof(int)      // id
-           + sizeof(char) * 100 // nome
-           + sizeof(char) * 15  // cpf
-           + sizeof(char) * 20; // telefone
+    return sizeof(int)      
+           + sizeof(char) * 100 
+           + sizeof(char) * 15  
+           + sizeof(char) * 20; 
 }
 
-//cria um novo cliente
 TCliente *cliente(int id, char *nome, char *cpf, char *telefone) {
     TCliente *c = (TCliente *) malloc(sizeof(TCliente));
     if (c) memset(c, 0, sizeof(TCliente));
@@ -47,7 +46,6 @@ void imprime_cliente(TCliente *c) {
     printf("---------------\n");
 }
 
-//cadastra um novo cliente
 void cadastra_novo_cliente(TCliente *c, FILE *arq_clientes) {
     fseek(arq_clientes, 0, SEEK_END);
     salva_cliente(c, arq_clientes);
@@ -55,7 +53,6 @@ void cadastra_novo_cliente(TCliente *c, FILE *arq_clientes) {
     printf("Cliente '%s' cadastrado com sucesso.\n", c->nome);
 }
 
-//retorna a quantidade de registros no arquivo de clientes
 int tamanho_arquivo_cliente(FILE *arq) {
     long current_pos = ftell(arq);
     fseek(arq, 0, SEEK_END);
@@ -64,7 +61,6 @@ int tamanho_arquivo_cliente(FILE *arq) {
     return tam;
 }
 
-//cria um cliente com entrada manual do usuario
 TCliente *cria_cliente_manual() {
     int id;
     char nome[100];
