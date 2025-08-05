@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "jogo.h" // Necessário pois a função de compra lida com jogos
-#include "cliente.h" // Necessário pois a função de compra lida com clientes
+#include "jogo.h" 
+#include "cliente.h" 
 
 #define MAX_ITENS 10
 
@@ -29,8 +29,7 @@ void adiciona_item_venda(TVenda *venda, int cod_jogo, int quantidade, double pre
 void registra_nova_venda(TVenda *venda, FILE *out);
 int tamanho_arquivo_venda(FILE *arq);
 
-// Protótipo da função movida para cá
 void realizar_compra(int id_cliente, int cod_jogo_desejado, int quantidade_comprada,
                       FILE *arq_jogos, FILE *arq_clientes, FILE *arq_vendas, FILE *log);
 
-#endif // VENDA_H_INCLUDED
+#endif 
